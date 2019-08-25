@@ -20,8 +20,8 @@ impl fmt::Display for Token {
             Lt => write!(f, "<"),
             Geq => write!(f, ">="),
             Leq => write!(f, "<="),
-            And => write!(f, "&&"),
-            Or => write!(f, "||"),
+            And => write!(f, "&"),
+            Or => write!(f, "|"),
             Not => write!(f, "!"),
 
             // Precedence

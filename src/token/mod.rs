@@ -50,8 +50,6 @@ pub enum PartialToken {
     ExclamationMark,
     Gt,
     Lt,
-    Ampersand,
-    VerticalBar,
 }
 
 // Make this a const fn as soon as match gets stable (issue #57563)
@@ -74,8 +72,8 @@ fn char_to_partial_token(c: char) -> PartialToken {
         '!' => PartialToken::ExclamationMark,
         '>' => PartialToken::Gt,
         '<' => PartialToken::Lt,
-        '&' => PartialToken::Ampersand,
-        '|' => PartialToken::VerticalBar,
+        '&' => PartialToken::Token(Token::And),
+        '|' => PartialToken::Token(Token::Or),
 
         c => {
             if c.is_whitespace() {
@@ -277,14 +275,6 @@ fn partial_tokens_to_tokens(mut tokens: &[PartialToken]) -> EvalexprResult<Vec<T
                         cutoff = 1;
                         Some(Token::Lt)
                     },
-                },
-                PartialToken::Ampersand => match second {
-                    Some(PartialToken::Ampersand) => Some(Token::And),
-                    _ => return Err(EvalexprError::unmatched_partial_token(first, second)),
-                },
-                PartialToken::VerticalBar => match second {
-                    Some(PartialToken::VerticalBar) => Some(Token::Or),
-                    _ => return Err(EvalexprError::unmatched_partial_token(first, second)),
                 },
             }
             .into_iter(),
